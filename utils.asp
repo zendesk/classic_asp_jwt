@@ -33,7 +33,6 @@ Function DictionaryToJSONString(dDictionary)
 
   For i = 0 to dDictionary.Count-1
     oJSONpayload.data (aKeys(i))= dDictionary(aKeys(i))
-	response.write dDictionary(aKeys(i)) & "<BR>"
   Next
 
   DictionaryToJSONString = oJSONpayload.JSONoutput()
