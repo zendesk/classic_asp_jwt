@@ -40,27 +40,27 @@ Function DictionaryToJSONString(dDictionary)
 End Function
 
 Function dtmAdjusted_date()
-Dim dtmDateValue, dtmAdjusted
-Dim objShell, lngBiasKey, lngBias, k
+  Dim dtmDateValue, dtmAdjusted
+  Dim objShell, lngBiasKey, lngBias, k
 
-dtmDateValue = Now()
+  dtmDateValue = Now()
 
-' Obtain local Time Zone bias from machine registry.
-Set objShell = CreateObject("Wscript.Shell")
-lngBiasKey = objShell.RegRead("HKLM\System\CurrentControlSet\Control\" _
-    & "TimeZoneInformation\ActiveTimeBias")
-If (UCase(TypeName(lngBiasKey)) = "LONG") Then
-    lngBias = lngBiasKey
-ElseIf (UCase(TypeName(lngBiasKey)) = "VARIANT()") Then
-    lngBias = 0
-    For k = 0 To UBound(lngBiasKey)
-        lngBias = lngBias + (lngBiasKey(k) * 256^k)
-    Next
-End If
+  ' Obtain local Time Zone bias from machine registry.
+  Set objShell = CreateObject("Wscript.Shell")
+  lngBiasKey = objShell.RegRead("HKLM\System\CurrentControlSet\Control\" _
+      & "TimeZoneInformation\ActiveTimeBias")
+  If (UCase(TypeName(lngBiasKey)) = "LONG") Then
+      lngBias = lngBiasKey
+  ElseIf (UCase(TypeName(lngBiasKey)) = "VARIANT()") Then
+      lngBias = 0
+      For k = 0 To UBound(lngBiasKey)
+          lngBias = lngBias + (lngBiasKey(k) * 256^k)
+      Next
+  End If
 
-' Convert datetime value to UTC.
-dtmAdjusted = DateAdd("n", lngBias, dtmDateValue)
-dtmAdjusted_date = dtmAdjusted
+  ' Convert datetime value to UTC.
+  dtmAdjusted = DateAdd("n", lngBias, dtmDateValue)
+  dtmAdjusted_date = dtmAdjusted
 
 End Function
 
