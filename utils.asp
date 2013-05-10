@@ -17,9 +17,9 @@ End Function
 Function Base64ToSafeBase64(sIn)
   sOut = Replace(sIn,"+","-")
   sOut = Replace(sOut,"/","_")
-  sOut = Replace(sOut,"","\r")
-  sOut = Replace(sOut,"","\n")
-  sOut = Replace(sOut,"","=")
+  sOut = Replace(sOut,"\r","")
+  sOut = Replace(sOut,"\n","")
+  sOut = Replace(sOut,"=","")
 
   Base64ToSafeBase64 = sOut
 End Function
