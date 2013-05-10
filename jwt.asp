@@ -37,7 +37,7 @@ End Function
 Function JWTHeaderDictionary()
   Dim dOut
   Set dOut = Server.CreateObject("Scripting.Dictionary")
-
+  dOut.Add "typ", "JWT"
   dOut.Add "alg", "HS256"
 
   JWTHeaderDictionary = DictionaryToJSONString(dOut)
