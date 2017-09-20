@@ -7,7 +7,7 @@ A JWT implementation in Classic ASP, currently only supports `JWTEncode(dictiona
 ```asp
 <!--#include file="jwt.asp" -->
 <%
-Dim sKey, dAttributes, sToken, decodedPayload
+Dim sKey, dAttributes, sToken, decodedPayload, isValidJWT
 
 sKey = "Shared Secret"
 Set dAttributes=Server.CreateObject("Scripting.Dictionary")
@@ -24,7 +24,7 @@ sToken = JWTEncode(dAttributes, sKey)
 decodedPayload = JWTDecode(sToken)
 
 ' Verify JWT String. (Returns Boolean)
-decodedPayload = JWTVerify(sToken, sKey)
+isValidJWT = JWTVerify(sToken, sKey)
 %>
 ```
 
