@@ -6,7 +6,12 @@ Function JWTEncode(dPayload, sSecret)
   Dim sPayload, sHeader, sBase64Payload, sBase64Header
   Dim sSignature, sToken
 
-  sPayload = DictionaryToJSONString(dPayload)
+  If Typename(dPayload) = "Dictionary" Then
+    sPayload = DictionaryToJSONString(dPayload)
+  Else
+    sPayload = dPayload
+  End If
+
   sHeader  = JWTHeaderDictionary()
 
   sBase64Payload = SafeBase64Encode(sPayload)
@@ -41,5 +46,27 @@ Function JWTHeaderDictionary()
   dOut.Add "alg", "HS256"
 
   JWTHeaderDictionary = DictionaryToJSONString(dOut)
+End Function
+
+' Returns decoded payload (not verify)
+Function JWTDecode(token)
+    Dim tokenSplited, sPayload
+    tokenSplited = Split(token, ".")
+    If UBound(tokenSplited) <> 2 Then
+        JWTDecode = "Invalid token"
+    Else
+        sPayload = tokenSplited(1)
+        sPayload = SafeBase64ToBase64(sPayload)
+        JWTDecode = Base64Decode(sPayload)
+    End If
+End Function
+
+' Returns if token is valid
+Function JWTVerify(token, sKey)
+    Dim jsonPayload, reEncodingToken, tokenPayload
+    tokenPayload = JWTDecode(token)
+    reEncodingToken = JWTEncode(tokenPayload, sKey)
+
+    JWTVerify = (token = reEncodingToken)
 End Function
 %>

@@ -24,6 +24,17 @@ Function Base64ToSafeBase64(sIn)
   Base64ToSafeBase64 = sOut
 End Function
 
+' change safe base64 to original base64
+Function SafeBase64ToBase64(sIn)
+    Dim removedEqualityLen
+    removedEqualityLen = 4 - Len(sIn) mod 4
+    If removedEqualityLen = 4 Then removedEqualityLen = 0
+    sOut = Replace(sIn,"-","+")
+    sOut = Replace(sOut,"_","/")
+    sOut = sOut & Replace(Space(removedEqualityLen)," ","=")
+    SafeBase64ToBase64 = sOut
+End Function
+
 ' Converts an ASP dictionary to a JSON string
 Function DictionaryToJSONString(dDictionary)
   Set oJSONpayload = New aspJSON
