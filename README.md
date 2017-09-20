@@ -20,11 +20,10 @@ dAttributes.Add "email", "roger@example.com"
 
 sToken = JWTEncode(dAttributes, sKey)
 
-' You can decode JWT token string and get payload. (WARNING : Not verify)
+' Decode JWT token string and get payload. (WARNING : Not verify)
 decodedPayload = JWTDecode(sToken)
-%>
 
-' You can verify JWT String. (Returns Boolean)
+' Verify JWT String. (Returns Boolean)
 decodedPayload = JWTVerify(sToken, sKey)
 %>
 ```
