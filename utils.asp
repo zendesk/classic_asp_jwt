@@ -1,5 +1,6 @@
-<!--#include file="external/base64.asp"-->
-<!--#include file="external/aspJSON.asp"-->
+<!--#include file="external/base64.asp" -->
+<!--#include file="external/aspJSON.asp" -->
+
 <%
 ' The URL- and filename-safe Base64 encoding described in RFC 4648 [RFC4648], Section 5,
 ' with the (non URL-safe) '=' padding characters omitted, as permitted by Section 3.2.
@@ -7,6 +8,7 @@
 ' http://tools.ietf.org/html/rfc4648
 ' http://tools.ietf.org/html/draft-ietf-jose-json-web-signature-10
 Function SafeBase64Encode(sIn)
+  Dim sOut
   sOut = Base64Encode(sIn)
   sOut = Base64ToSafeBase64(sOut)
 
@@ -15,6 +17,7 @@ End Function
 
 ' Strips unsafe characters from a Base64 encoded string
 Function Base64ToSafeBase64(sIn)
+  Dim sOut
   sOut = Replace(sIn,"+","-")
   sOut = Replace(sOut,"/","_")
   sOut = Replace(sOut,"\r","")
@@ -24,8 +27,21 @@ Function Base64ToSafeBase64(sIn)
   Base64ToSafeBase64 = sOut
 End Function
 
+' change safe base64 to original base64
+Function SafeBase64ToBase64(sIn)
+    Dim removedEqualityLen
+    removedEqualityLen = 4 - Len(sIn) mod 4
+    If removedEqualityLen = 4 Then removedEqualityLen = 0
+    Dim sOut
+    sOut = Replace(sIn,"-","+")
+    sOut = Replace(sOut,"_","/")
+    sOut = sOut & Replace(Space(removedEqualityLen)," ","=")
+    SafeBase64ToBase64 = sOut
+End Function
+
 ' Converts an ASP dictionary to a JSON string
 Function DictionaryToJSONString(dDictionary)
+  Dim oJSONpayload
   Set oJSONpayload = New aspJSON
 
   
@@ -72,9 +88,8 @@ End Function
 
 ' Returns a random string to prevent replays
 Function UniqueString()
-  Set TypeLib = CreateObject("Scriptlet.TypeLib")
-    UniqueString = Left(CStr(TypeLib.Guid), 38)
-    Set TypeLib = Nothing
+    Randomize
+    UniqueString = Year(Now) & Month(Now) & Day(Now) & Hour(Now) & Minute(Now) & Second(Now) & Int(Rnd * 1000)
 End Function
 
 

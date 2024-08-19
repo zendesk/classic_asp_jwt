@@ -1,3 +1,5 @@
+https://github.com/zendesk/classic_asp_jwt.git
+
 ## Classic ASP JWT
 
 A JWT implementation in Classic ASP, currently only supports `JWTEncode(dictionary, secret)`.
@@ -7,7 +9,7 @@ A JWT implementation in Classic ASP, currently only supports `JWTEncode(dictiona
 ```asp
 <!--#include file="jwt.asp" -->
 <%
-Dim sKey, dAttributes, sToken
+Dim sKey, dAttributes, sToken, decodedPayload, isValidJWT
 
 sKey = "Shared Secret"
 Set dAttributes=Server.CreateObject("Scripting.Dictionary")
@@ -19,6 +21,12 @@ dAttributes.Add "name", "Roger"
 dAttributes.Add "email", "roger@example.com"
 
 sToken = JWTEncode(dAttributes, sKey)
+
+' Decode JWT token string and get payload. (WARNING : Not verify)
+decodedPayload = JWTDecode(sToken)
+
+' Verify JWT String. (Returns Boolean)
+isValidJWT = JWTVerify(sToken, sKey)
 %>
 ```
 
